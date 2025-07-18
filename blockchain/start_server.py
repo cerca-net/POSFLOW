@@ -19,7 +19,7 @@ if __name__ == "__main__":
     parser.add_argument('--ip', default='0.0.0.0', help='IP address to bind to')
     parser.add_argument('--node_port', type=int, default=10000, help='Node port')
     parser.add_argument('--api_port', type=int, default=8051, help='API port')
-    parser.add_argument('--key_file', default='./keys/genesis_private_key.pem', help='Private key file')
+    parser.add_argument('--key_file', default=None, help='Private key file')
 
     args = parser.parse_args()
     logging.info(f"Starting server with IP: {args.ip}, Node Port: {args.node_port}, API Port: {args.api_port}")
