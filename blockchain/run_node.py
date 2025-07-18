@@ -1,4 +1,5 @@
 from blockchain.node import Node
+import time
 
 
 def main(ip, node_port, api_port, key_file=None):
@@ -6,8 +7,18 @@ def main(ip, node_port, api_port, key_file=None):
         print(f"Starting node with IP: {ip}, Node Port: {node_port}, API Port: {api_port}")
         node = Node(ip, node_port, key_file)
         print("Node created successfully")
+        
+        # Add delay before starting P2P communication
+        print("Waiting 10 seconds before starting P2P communication...")
+        time.sleep(10)
+        
         node.start_p2p()
         print("P2P communication started")
+        
+        # Add delay before starting API server
+        print("Waiting 5 seconds before starting API server...")
+        time.sleep(5)
+        
         node.start_node_api(api_port)
         print("API server started")
     except Exception as e:
