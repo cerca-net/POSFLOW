@@ -1,4 +1,5 @@
 import copy
+import logging
 
 from api.main import NodeAPI
 from blockchain.blockchain import Blockchain
@@ -9,6 +10,7 @@ from blockchain.transaction.wallet import Wallet
 from blockchain.utils.helpers import BlockchainUtils
 from blockchain.utils.logger import logger
 
+
 class Node:
     def __init__(self, ip, port, key=None):
         self.p2p = None
@@ -17,17 +19,38 @@ class Node:
         self.transaction_pool = TransactionPool()
         self.wallet = Wallet()
         self.blockchain = Blockchain()
-        if key:
-            self.wallet.from_key(key)
+        try:
+            if key:
+                self.wallet.from_key(key)
+        except Exception as e:
+            logger.warning({
+                "message": "Failed to load key file, using default wallet",
+                "error": str(e),
+            })
+            self.wallet.generate_key_pair()
 
     def start_p2p(self):
-        self.p2p = SocketCommunication(self.ip, self.port)
-        self.p2p.start_socket_communication(self)
+        try:
+            self.p2p = SocketCommunication(self.ip, self.port)
+            self.p2p.start_socket_communication(self)
+        except Exception as e:
+            logger.error({
+                "message": "Failed to start P2P communication",
+                "error": str(e),
+            })
+            raise
 
     def start_node_api(self, api_port):
-        self.api = NodeAPI()
-        self.api.inject_node(self)
-        self.api.start(self.ip, api_port)
+        try:
+            self.api = NodeAPI()
+            self.api.inject_node(self)
+            self.api.start(self.ip, api_port)
+        except Exception as e:
+            logger.error({
+                "message": "Failed to start API server",
+                "error": str(e),
+            })
+            raise
 
     def handle_transaction(self, transaction):
         data = transaction.payload()
