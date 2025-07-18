@@ -9,7 +9,6 @@ from blockchain.transaction.wallet import Wallet
 from blockchain.utils.helpers import BlockchainUtils
 from blockchain.utils.logger import logger
 
-
 class Node:
     def __init__(self, ip, port, key=None):
         self.p2p = None
