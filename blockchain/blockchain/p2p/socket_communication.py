@@ -25,8 +25,24 @@ class SocketCommunication(Node):
                     "node": {"id": self.id, "ip": self.host, "port": self.port},
                 }
             )
-            self.sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-            self.sock.bind((self.host, self.port))
+            # Try to set socket options and bind with retry
+            retry_count = 0
+            max_retries = 3
+            while retry_count < max_retries:
+                try:
+                    self.sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+                    self.sock.bind((self.host, self.port))
+                    break
+                except socket.error as e:
+                    if e.errno == socket.errno.EADDRINUSE and retry_count < max_retries - 1:
+                        logger.warning({
+                            "message": f"Address already in use, retrying in 5 seconds... (Attempt {retry_count + 1}/{max_retries})",
+                        })
+                        time.sleep(5)
+                        retry_count += 1
+                    else:
+                        raise
+
             self.sock.settimeout(10.0)
             self.sock.listen(1)
             self.initialized = True
