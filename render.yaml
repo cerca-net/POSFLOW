@@ -9,3 +9,5 @@ services:
         value: .
       - key: PORT
         value: 8051
+      - key: BUILD_ENV
+        value: production
