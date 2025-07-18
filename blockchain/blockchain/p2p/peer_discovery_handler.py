@@ -6,7 +6,6 @@ from blockchain.p2p.message import Message
 from blockchain.utils.helpers import BlockchainUtils
 from blockchain.utils.logger import logger
 
-
 class PeerDiscoveryHandler:
     def __init__(self, node):
         self.socket_communication = node
@@ -77,7 +76,14 @@ class PeerDiscoveryHandler:
             if not peer_known and not peers_peer.equals(
                 self.socket_communication.socket_connector
             ):
-                ip = peers_peer.ip
-                if self.use_docker:
-                    ip = peers_peer.docker_ip
-                self.socket_communication.connect_with_node(ip, peers_peer.port)
+                try:
+                    ip = peers_peer.ip
+                    if self.use_docker:
+                        ip = peers_peer.docker_ip
+                    self.socket_communication.connect_with_node(ip, peers_peer.port)
+                except ValueError as e:
+                    logger.error({
+                        "message": "Failed to connect to peer",
+                        "error": str(e),
+                        "peer": f"{peers_peer.ip}:{peers_peer.port}"
+                    })
