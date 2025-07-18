@@ -3,9 +3,13 @@ from blockchain.node import Node
 
 def main(ip, node_port, api_port, key_file=None):
     try:
+        print(f"Starting node with IP: {ip}, Node Port: {node_port}, API Port: {api_port}")
         node = Node(ip, node_port, key_file)
+        print("Node created successfully")
         node.start_p2p()
+        print("P2P communication started")
         node.start_node_api(api_port)
+        print("API server started")
     except Exception as e:
         print(f"Critical error: {e}")
         raise
