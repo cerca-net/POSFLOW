@@ -8,4 +8,4 @@ startCommand: python -m blockchain.start_server --ip=0.0.0.0 --node_port=$PORT -
       - key: PYTHONPATH
         value: .
       - key: PORT
-        value: 8050
+        value: 8051

@@ -25,4 +25,4 @@ if __name__ == "__main__":
     os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
     # Create and run the node
-main(args.ip, args.node_port, args.api_port, args.key_file)
+    main(args.ip, args.node_port, args.api_port, args.key_file)
