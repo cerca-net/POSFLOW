@@ -13,7 +13,7 @@ class ProofOfStake:
         self.set_genesis_node_stake()
 
     def set_genesis_node_stake(self):
-        genesis_key_path = "./keys/genesis_public_key.pem"
+        genesis_key_path = "./blockchain/keys/genesis_public_key.pem"
         if os.path.exists(genesis_key_path):
             try:
                 with open(genesis_key_path, "rb") as key_file:
