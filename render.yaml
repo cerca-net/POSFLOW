@@ -3,7 +3,7 @@ services:
     name: pos-blockchain
     env: python
     buildCommand: pip install -r blockchain/requirements/prod.txt
-startCommand: python -m blockchain.start_server --ip=0.0.0.0 --node_port=$PORT --api_port=$PORT --key_file=./blockchain/keys/genesis_private_key.pem
+    startCommand: python blockchain/start_server.py --ip=0.0.0.0 --node_port=$PORT --api_port=$PORT --key_file=./blockchain/keys/genesis_private_key.pem
     envVars:
       - key: PYTHONPATH
         value: .
