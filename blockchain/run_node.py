@@ -1,5 +1,10 @@
 from blockchain.node import Node
 
+def main(ip, node_port, api_port, key_file=None):
+    node = Node(ip, node_port, key_file)
+    node.start_p2p()
+    node.start_node_api(api_port)
+
 if __name__ == "__main__":
     import argparse
 
@@ -31,7 +36,4 @@ if __name__ == "__main__":
     )
     args = parser.parse_args()
 
-    node = Node(args.ip, args.node_port, args.key_file)
-
-    node.start_p2p()
-    node.start_node_api(args.api_port)
+    main(args.ip, args.node_port, args.api_port, args.key_file)
