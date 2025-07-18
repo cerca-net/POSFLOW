@@ -1,5 +1,6 @@
 import copy
 import logging
+import time
 
 from api.main import NodeAPI
 from blockchain.blockchain import Blockchain
@@ -31,8 +32,14 @@ class Node:
 
     def start_p2p(self):
         try:
+            print("Creating SocketCommunication instance...")
             self.p2p = SocketCommunication(self.ip, self.port)
+            print(f"SocketCommunication created with IP: {self.ip}, Port: {self.port}")
+            time.sleep(2)  # Small delay between component initializations
+            print("Starting socket communication...")
             self.p2p.start_socket_communication(self)
+            print("Socket communication started")
+            time.sleep(2)  # Small delay after starting socket communication
         except Exception as e:
             logger.error({
                 "message": "Failed to start P2P communication",
@@ -42,9 +49,15 @@ class Node:
 
     def start_node_api(self, api_port):
         try:
+            print(f"Creating NodeAPI instance on port {api_port}...")
             self.api = NodeAPI()
+            time.sleep(1)  # Small delay before injecting node
+            print("Injecting node into API...")
             self.api.inject_node(self)
+            time.sleep(1)  # Small delay before starting API
+            print(f"Starting API server on port {api_port}...")
             self.api.start(self.ip, api_port)
+            print("API server started")
         except Exception as e:
             logger.error({
                 "message": "Failed to start API server",
