@@ -1,9 +1,15 @@
 from blockchain.node import Node
 
+
 def main(ip, node_port, api_port, key_file=None):
-    node = Node(ip, node_port, key_file)
-    node.start_p2p()
-    node.start_node_api(api_port)
+    try:
+        node = Node(ip, node_port, key_file)
+        node.start_p2p()
+        node.start_node_api(api_port)
+    except Exception as e:
+        print(f"Critical error: {e}")
+        raise
+
 
 if __name__ == "__main__":
     import argparse
